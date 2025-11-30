@@ -1,19 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="login-container">
-    <h2>Welcome Back</h2>
-    <input type="text" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <p class="note">Not a member? <a href="#">Sign up</a></p>
-  </div>
-<script src="app.js"></script>
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const supabaseUrl = "YOUR_SUPABASE_URL";
+  const supabaseKey = "YOUR_SUPABASE_ANON_KEY";
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+  async function login() {
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      alert("Please fill all fields!");
+      return;
+    }
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      alert("Login failed: " + error.message);
+    } else {
+      window.location.href = "dashboard.html";
+    }
+  }
+</script>
