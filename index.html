@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FocusMate – Smart Productivity Web App</title>
+    <title>🌟 FocusMate – Smart Productivity</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Custom Styles */
+        /* Custom Variables */
         :root {
-            --primary-color: #5d6d7e; /* Darker blue-grey */
-            --secondary-color: #aeb6bf; /* Lighter blue-grey */
-            --accent-color: #2ecc71; /* Green for focus/success */
-            --bg-color: #f8f9fa;
+            --primary-color: #3498db; /* Blue */
+            --accent-color: #2ecc71; /* Green Success */
+            --warning-color: #f39c12; /* Yellow Warning */
+            --danger-color: #e74c3c; /* Red Danger */
+            --bg-dark: #2c3e50; /* Dark Background */
+            --bg-light: #ecf0f1; /* Light Background */
+            --text-light: #ecf0f1;
+            --font-family: 'Poppins', sans-serif;
         }
 
+        /* General Body and Font */
         body {
-            background-color: var(--bg-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-light);
+            font-family: var(--font-family);
         }
 
         /* --- Login Page Styles --- */
@@ -26,16 +31,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--bg-dark) 100%);
         }
 
         .login-card {
-            max-width: 400px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+            background-color: white;
+            max-width: 420px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
-
+        
         /* --- Dashboard Styles --- */
         #dashboard-page {
             display: none; /* Hidden by default */
@@ -43,57 +49,93 @@
         }
 
         .sidebar {
-            background-color: var(--primary-color);
-            color: white;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             padding-top: 20px;
             min-height: 100vh;
-            position: sticky; /* Keep sidebar visible */
-            top: 0;
         }
 
         .sidebar .nav-link {
-            color: white;
-            padding: 15px 20px;
-            transition: background-color 0.3s;
+            color: var(--text-light);
+            padding: 15px 25px;
+            margin: 5px 0;
+            border-radius: 8px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .sidebar .nav-link.active,
         .sidebar .nav-link:hover {
-            background-color: #4a5967; /* Darker hover */
-            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .main-content {
+            padding: 20px;
         }
 
         .section-content {
+            background-color: white;
+            border-radius: 10px;
             padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
         }
 
         /* --- Timer Styles --- */
+        .timer-container {
+            border: 5px solid var(--primary-color);
+            border-radius: 50%;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+            transition: all 0.5s;
+        }
+
         #focus-timer-display {
-            font-size: 4rem;
-            font-weight: bold;
+            font-size: 4.5rem;
+            font-weight: 700;
             color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .timer-is-active {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 30px rgba(46, 204, 113, 0.7);
         }
 
         .timer-buttons button {
-            transition: transform 0.1s;
-        }
-
-        .timer-buttons button:active {
-            transform: scale(0.98);
+            border-radius: 50px;
+            font-weight: bold;
         }
 
         /* --- Goals Styles --- */
         .list-group-item {
-            border-left: 5px solid var(--secondary-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-left: 5px solid var(--primary-color);
+            margin-bottom: 8px;
+            border-radius: 8px;
+            transition: all 0.3s;
         }
         
-        /* Highlight for active focus session */
-        .is-focusing {
-            background-color: var(--accent-color) !important;
-            color: white !important;
+        .list-group-item:hover {
+            background-color: var(--bg-light);
+        }
+
+        .delete-goal-btn {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        /* --- Graph Styles --- */
+        #productivityChart {
+            max-height: 400px;
         }
     </style>
 </head>
@@ -111,68 +153,64 @@
                 <label for="passwordInput" class="form-label">Password</label>
                 <input type="password" class="form-control" id="passwordInput" value="password" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Log In</button>
-            <p class="mt-3 text-center text-muted">Use any credentials (Mock Login)</p>
+            <button type="submit" class="btn btn-primary w-100 mt-3">Log In</button>
+            <p class="mt-3 text-center text-muted">Use the pre-filled credentials for mock access.</p>
         </form>
     </div>
 </div>
 
-<div id="dashboard-page" class="row g-0">
+<div id="dashboard-page" class="d-flex">
     <div class="col-md-3 sidebar">
-        <h3 class="text-center mb-5">🌟 FocusMate</h3>
-        <ul class="nav flex-column">
+        <h3 class="text-center mb-5 pt-3">🌟 FocusMate</h3>
+        <p class="text-center text-secondary mb-4" id="welcome-message">Hello, User!</p>
+        <ul class="nav flex-column px-3">
             <li class="nav-item">
-                <a class="nav-link active" href="#" data-section="focus">⏱️ Focus Session</a>
+                <a class="nav-link active" href="#" data-section="focus"><i class="fas fa-clock"></i> ⏱️ Focus Session</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" data-section="goals">📝 Goals Manager</a>
+                <a class="nav-link" href="#" data-section="goals"><i class="fas fa-tasks"></i> 📝 Goals Manager</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" data-section="progress">📊 Progress Graph</a>
+                <a class="nav-link" href="#" data-section="progress"><i class="fas fa-chart-line"></i> 📊 Progress Graph</a>
             </li>
         </ul>
-        <div class="mt-auto p-3 fixed-bottom" style="width: 25%;">
+        <div class="p-3 mt-5">
             <button id="logout-btn" class="btn btn-outline-light w-100">🚪 Logout</button>
         </div>
     </div>
 
     <div class="col-md-9 main-content">
+        <h1 class="mb-4 text-dark">Dashboard Overview</h1>
+        
         <div id="focus-section" class="section-content">
-            <h2 class="mb-4 text-primary">⏱️ Focus Session</h2>
-            <div class="card p-5 text-center">
-                <div id="focus-timer-display" class="mb-4">25:00</div>
-                <div class="timer-buttons">
-                    <button id="start-btn" class="btn btn-success btn-lg mx-2">Start Focus</button>
-                    <button id="pause-btn" class="btn btn-warning btn-lg mx-2" style="display: none;">Pause</button>
-                    <button id="reset-btn" class="btn btn-danger btn-lg mx-2">Reset</button>
-                </div>
+            <h2 class="mb-5 text-primary">Time to Focus</h2>
+            <div class="timer-container">
+                <div id="focus-timer-display">25:00</div>
+                <small class="text-muted">Pomodoro Timer</small>
+            </div>
+            <div class="timer-buttons text-center">
+                <button id="start-btn" class="btn btn-success btn-lg mx-2">Start Focus</button>
+                <button id="pause-btn" class="btn btn-warning btn-lg mx-2" style="display: none;">Pause</button>
+                <button id="reset-btn" class="btn btn-danger btn-lg mx-2">Reset</button>
             </div>
         </div>
 
         <div id="goals-section" class="section-content" style="display: none;">
-            <h2 class="mb-4 text-primary">📝 Goals Manager</h2>
-            <div class="input-group mb-3">
-                <input type="text" id="goal-input" class="form-control" placeholder="Add a new goal or task..." aria-label="New goal">
-                <button class="btn btn-primary" type="button" id="add-goal-btn">Add Goal</button>
+            <h2 class="mb-4 text-primary">Your Daily Goals</h2>
+            <div class="input-group mb-4">
+                <input type="text" id="goal-input" class="form-control form-control-lg" placeholder="Add a new goal or task..." aria-label="New goal">
+                <button class="btn btn-primary btn-lg" type="button" id="add-goal-btn">Add</button>
             </div>
             <ul class="list-group" id="goals-list">
-                <li class="list-group-item">
-                    Finish FocusMate HTML/CSS
-                    <button class="btn btn-sm btn-outline-danger delete-goal-btn">Delete</button>
-                </li>
-                <li class="list-group-item">
-                    Study for one hour
-                    <button class="btn btn-sm btn-outline-danger delete-goal-btn">Delete</button>
-                </li>
-            </ul>
+                </ul>
         </div>
 
         <div id="progress-section" class="section-content" style="display: none;">
-            <h2 class="mb-4 text-primary">📊 Weekly Progress Graph</h2>
-            <div class="card p-4">
+            <h2 class="mb-4 text-primary">Weekly Productivity Summary</h2>
+            <div class="card p-4 border-0">
                 <canvas id="productivityChart"></canvas>
             </div>
-            <p class="mt-3 text-muted">This graph shows a mock representation of your weekly focus minutes.</p>
+            <p class="mt-3 text-muted text-center">Visualizing your focus minutes helps you track progress and build better habits.</p>
         </div>
     </div>
 </div>
@@ -186,7 +224,8 @@
         timer: 1500, // 25 minutes in seconds
         isPaused: true,
         intervalId: null,
-        goals: []
+        goals: ['Finish FocusMate refactoring', 'Review project notes', 'Take a 5-minute break'],
+        userName: 'Productive User'
     };
 
     // === DOM Elements ===
@@ -194,9 +233,11 @@
     const dashboardPage = document.getElementById('dashboard-page');
     const loginForm = document.getElementById('loginForm');
     const logoutBtn = document.getElementById('logout-btn');
+    const welcomeMessage = document.getElementById('welcome-message');
 
     // Timer Elements
     const focusTimerDisplay = document.getElementById('focus-timer-display');
+    const timerContainer = document.querySelector('.timer-container');
     const startBtn = document.getElementById('start-btn');
     const pauseBtn = document.getElementById('pause-btn');
     const resetBtn = document.getElementById('reset-btn');
@@ -216,57 +257,65 @@
 
     let productivityChart;
 
-    // === Helper Functions ===
+    // --- Helper Functions ---
 
     /** Toggles between the login page and the dashboard. */
     function toggleView(isLoggedIn) {
         if (isLoggedIn) {
             loginPage.style.display = 'none';
             dashboardPage.style.display = 'flex';
-            // Initialize graph only when dashboard is shown
+            welcomeMessage.textContent = `Hello, ${state.userName}!`;
+            renderGoals();
             if (!productivityChart) {
                 initializeChart();
             }
         } else {
             loginPage.style.display = 'flex';
             dashboardPage.style.display = 'none';
+            // Stop timer if user logs out while running
+            clearInterval(state.intervalId);
+            state.isPaused = true;
         }
     }
 
-    // === 🔐 Login/Logout Handlers (Mock) ===
+    // --- 🔐 Functional Mock Login/Logout ---
 
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        // In a real app, you'd send credentials to a server here.
-        // For the mock, we just check if fields are filled.
-        if (emailInput.value && passwordInput.value) {
+        const email = document.getElementById('emailInput').value;
+        const password = document.getElementById('passwordInput').value;
+        
+        // Mock Authentication: Check if fields match mock credentials
+        if (email === 'user@focus.com' && password === 'password') {
             state.isLoggedIn = true;
+            // Get user name from email prefix for a personalized touch
+            state.userName = email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1);
             toggleView(state.isLoggedIn);
-            // Hide the password after successful login for cleanliness
-            passwordInput.value = ''; 
+        } else {
+            alert('Mock Login Failed. Please use "user@focus.com" and "password".');
         }
     });
 
     logoutBtn.addEventListener('click', () => {
         state.isLoggedIn = false;
         toggleView(state.isLoggedIn);
+        // Reset timer state on logout
+        resetTimer(); 
     });
 
-    // === ⏱️ Focus Timer Logic ===
+    // --- ⏱️ Focus Timer Logic ---
 
-    /** Formats seconds into MM:SS string. */
     function formatTime(totalSeconds) {
         const minutes = Math.floor(totalSeconds / 60);
         const seconds = totalSeconds % 60;
         return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     }
 
-    /** Renders the current timer value to the display. */
     function renderTimer() {
         focusTimerDisplay.textContent = formatTime(state.timer);
+        focusTimerDisplay.style.color = state.isPaused ? varToString('--primary-color') : varToString('--accent-color');
     }
 
-    /** Updates the timer every second. */
     function updateTimer() {
         if (state.timer > 0) {
             state.timer--;
@@ -277,22 +326,22 @@
             state.isPaused = true;
             startBtn.style.display = 'block';
             pauseBtn.style.display = 'none';
-            focusTimerDisplay.textContent = 'Session Complete!';
-            document.body.classList.remove('is-focusing');
-            // Play a sound or show a notification in a real app
+            focusTimerDisplay.textContent = 'Done!';
+            timerContainer.classList.remove('timer-is-active');
+            alert('Focus Session Complete!'); 
         }
     }
 
     startBtn.addEventListener('click', () => {
         if (state.isPaused) {
             state.isPaused = false;
-            // Ensure timer starts at 25:00 if it was reset to 0
-            if (state.timer === 0) state.timer = 1500; 
+            if (state.timer <= 0) state.timer = 1500; // Restart if it finished
 
             state.intervalId = setInterval(updateTimer, 1000);
             startBtn.style.display = 'none';
             pauseBtn.style.display = 'block';
-            document.body.classList.add('is-focusing'); // Visual hint
+            timerContainer.classList.add('timer-is-active'); 
+            renderTimer();
         }
     });
 
@@ -302,45 +351,45 @@
             state.isPaused = true;
             startBtn.style.display = 'block';
             pauseBtn.style.display = 'none';
-            document.body.classList.remove('is-focusing');
+            timerContainer.classList.remove('timer-is-active');
+            renderTimer();
         }
     });
-
-    resetBtn.addEventListener('click', () => {
+    
+    function resetTimer() {
         clearInterval(state.intervalId);
         state.timer = 1500; // Reset to 25 minutes
         state.isPaused = true;
         renderTimer();
         startBtn.style.display = 'block';
         pauseBtn.style.display = 'none';
-        document.body.classList.remove('is-focusing');
-    });
+        timerContainer.classList.remove('timer-is-active');
+    }
+
+    resetBtn.addEventListener('click', resetTimer);
 
     // Initialize timer display on load
     renderTimer(); 
 
-    // === 📝 Goals Manager Logic ===
+    // --- 📝 Goals Manager Logic ---
 
     /** Renders the goal list from the state. */
     function renderGoals() {
         goalsList.innerHTML = ''; // Clear existing list
-        const currentGoals = Array.from(goalsList.children).map(li => li.firstChild.textContent.trim());
-
-        // Add any goals from the goalsList (sample goals) that aren't in state.goals yet
-        currentGoals.forEach(goalText => {
-            if (!state.goals.includes(goalText) && goalText !== '') {
-                 state.goals.push(goalText);
-            }
-        });
+        
+        if (state.goals.length === 0) {
+            goalsList.innerHTML = '<li class="list-group-item text-center text-muted">No goals added yet. Stay productive!</li>';
+            return;
+        }
 
         state.goals.forEach((goalText, index) => {
-            if(goalText.trim() === '') return; // Skip empty goals
+            if(goalText.trim() === '') return; 
             
             const listItem = document.createElement('li');
-            listItem.className = 'list-group-item';
+            listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
             listItem.innerHTML = `
-                ${goalText}
-                <button class="btn btn-sm btn-outline-danger delete-goal-btn" data-index="${index}">Delete</button>
+                <span>${goalText}</span>
+                <button class="btn btn-sm delete-goal-btn" data-index="${index}">Done / Delete</button>
             `;
             goalsList.appendChild(listItem);
         });
@@ -350,39 +399,43 @@
         const newGoalText = goalInput.value.trim();
         if (newGoalText) {
             state.goals.push(newGoalText);
-            goalInput.value = ''; // Clear input
+            goalInput.value = ''; 
             renderGoals();
         }
     });
 
-    // Use event delegation for delete button clicks
+    // Event delegation for delete button clicks
     goalsList.addEventListener('click', (e) => {
         if (e.target.classList.contains('delete-goal-btn')) {
-            const indexToDelete = Array.from(e.target.parentNode.parentNode.children).indexOf(e.target.parentNode);
-            if (indexToDelete > -1) {
-                 // Remove from state and re-render
-                state.goals.splice(indexToDelete, 1);
-                renderGoals();
+            const listItem = e.target.closest('.list-group-item');
+            if (listItem) {
+                 const indexToDelete = Array.from(goalsList.children).indexOf(listItem);
+                 // Using splice to remove the item from the state array
+                 state.goals.splice(indexToDelete, 1);
+                 renderGoals();
             }
         }
     });
 
-    // Initialize goals
-    renderGoals();
-
-
-    // === 📊 Progress Graph Logic (Chart.js) ===
+    // --- 📊 Progress Graph Logic (Chart.js) ---
 
     function initializeChart() {
         const ctx = document.getElementById('productivityChart').getContext('2d');
+        const primaryColor = varToString('--primary-color');
+        const accentColor = varToString('--accent-color');
+        
         const data = {
             labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             datasets: [{
                 label: 'Focus Minutes',
-                data: [120, 180, 150, 210, 90, 30, 0], // Mock data
-                borderColor: varToString('--accent-color'),
-                backgroundColor: 'rgba(46, 204, 113, 0.2)',
-                tension: 0.4, // Smooth line
+                data: [150, 180, 210, 120, 90, 60, 0], // Mock data
+                borderColor: primaryColor,
+                backgroundColor: 'rgba(52, 152, 219, 0.4)',
+                pointBackgroundColor: accentColor,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: accentColor,
+                tension: 0.4, 
                 fill: true
             }]
         };
@@ -392,23 +445,33 @@
             data: data,
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Minutes'
+                            text: 'Minutes Focused',
+                            color: primaryColor
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                         grid: {
+                            display: false
                         }
                     }
                 },
                 plugins: {
                     legend: {
-                        display: true,
-                        position: 'top',
+                        display: false,
                     },
                     title: {
                         display: true,
-                        text: 'Weekly Focus Time'
+                        text: 'Last 7 Days',
+                        font: { size: 18 }
                     }
                 }
             }
@@ -417,13 +480,13 @@
         productivityChart = new Chart(ctx, config);
     }
 
-    // Helper to get CSS variable value (used for Chart.js)
+    // Helper to get CSS variable value
     function varToString(variable) {
         return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
     }
 
 
-    // === 🔁 Smooth Navigation Logic ===
+    // --- 🔁 Smooth Navigation Logic ---
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
