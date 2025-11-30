@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusMate Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<header class="topbar"><h1>FocusMate Dashboard</h1></header>
+<section class="main-grid">
+  <div class="box">
+    <h2>Add Your Daily Progress</h2>
+    <textarea id="dailyText" placeholder="What did you complete today?"></textarea>
+    <button onclick="saveProgress()">Save Progress</button>
+  </div>
+  <div class="box">
+    <h2>Ask AI Mentor</h2>
+    <input id="aiInput" placeholder="Ask something...">
+    <button onclick="askAI()">Ask</button>
+    <p id="aiOutput"></p>
+  </div>
+  <div class="box full">
+    <h2>Your Productivity Graph</h2>
+    <canvas id="productivityChart"></canvas>
+  </div>
+</section>
+<script src="app.js"></script>
+</body>
+</html>
